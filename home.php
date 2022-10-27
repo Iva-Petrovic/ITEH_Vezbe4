@@ -4,23 +4,20 @@ require "model/prijava.php";
 
 session_start();
 
-if(!isset($_SESSION['user_id'])){
+if(!isset($_SESSION['user_id'])){  #da li je user logovan
     header('Location:index.php');
     exit();
 }
 
 $rezultat = Prijava::getAll($conn);
 
+
 if(!$rezultat){
     echo "Nastala je greška prilikom izvođenja upitanja <br>";
-    die();
+    die(); #prekida sa izvrsavanjem skripte
 }
 
-if($rezultat->num_rows==0){
-    echo "Nema prijava na kolokvijume";
-    die();
-}
-else{
+
 
 ?>
 <!DOCTYPE html>
@@ -58,11 +55,19 @@ else{
 </div>
 
 <div id="pregled" class="panel panel-success" style="margin-top: 1%;">
-    
+    <?php
+    if($rezultat->num_rows==0){ #pomerili smo ovde, da bi videli pocetnu str
+        echo "Nema prijava na kolokvijume";
+        //die();  - ovaj bi ukinuo i modale
+    }
+    else{
+    ?>
     <div class="panel-body">
         <table id="myTable" class="table table-hover table-striped" style="color: black; background-color: grey;" >
-            <thead class ="thead">
-            <tr >
+            
+        <thead class ="thead">
+        
+            <tr > 
                 <th scope="col">Predmet</th>
                 <th scope="col">Katedra</th>    
                 <th scope="col">Sala</th>
@@ -71,7 +76,7 @@ else{
             </thead>
             <tbody>
             <?php 
-                while($red=$rezultat->fetch_array()):
+                while($red=$rezultat->fetch_array()):  #cita sve, red po red, do kraja
             ?>
                 <tr>
                     <td><?php echo $red["predmet"] ?></td>
@@ -89,7 +94,7 @@ else{
                 <?php
                 endwhile;
 
-            } //zatvaranje else-a
+       
                 ?>
 
             </tbody>
@@ -109,10 +114,13 @@ else{
                 </div>
 
         </div>
+
+    <?php }  #zatvaranje else-a iz 63eg reda
+    ?> 
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modali -->
 <div class="modal fade" id="myModal" role="dialog" >
     <div class="modal-dialog">
 

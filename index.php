@@ -20,7 +20,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
         </script>
         `;
         $_SESSION['user_id'] = $korisnik->id;
-        header('Location: home.php');
+        header('Location: home.php');  #saljemo tu sajt
         exit();
     }else{
         echo `
